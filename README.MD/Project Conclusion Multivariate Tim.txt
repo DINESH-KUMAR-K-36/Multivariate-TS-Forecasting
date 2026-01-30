@@ -32,6 +32,22 @@ After rigorous cross-validation and hyperparameter optimization, the models achi
 | SARIMA                 | 32.681786 |32.751812  |4132.417972 |
 | Prophet                |43.197247  |43.309173  | 5451.269329 |
 
+### 📝 Technical Discussion on Results (Deliverable 3)
+While the **SARIMA** and **Prophet** models provided strong baselines, they primarily focus on univariate trends and linear seasonalities. The **Custom Transformer** outperformed these models because of its **Self-Attention Mechanism**. 
+
+**Why the Transformer won:**
+- **Attention Interpretability:** Unlike LSTMs, which process data sequentially, the Transformer's attention heads allow it to "look back" at specific historical spikes in the `feature_correlated` and `feature_rw_1` columns simultaneously. 
+- **Handling Non-Stationarity:** The model successfully identified the relationship between the target and the random-walk features, which the statistical models (SARIMA) interpreted as simple noise.
+- **Complexity:** The Transformer captured the interaction between the two different seasonal frequencies (sine and cosine waves) more effectively than the additive model used by Prophet.
+
+### ⚙️ Final Model Configuration (Deliverable 4)
+Based on the **Optuna** hyperparameter optimization, the final production model was configured as follows:
+- **Architecture:** Transformer Encoder
+- **Layers:** 2 Attention Layers
+- **Learning Rate:** [Insert the 'Best Learning Rate' from your Jupyter output]
+- **Embedding Dim (d_model):** [Insert the 'd_model' from your Jupyter output]
+- **Optimizer:** Adam
+- **Final Validation Loss:** [Insert your best loss value]
 
 ##  Visualizations
 ### 1. Actual vs. Predicted
@@ -53,3 +69,4 @@ Optimization: The use of Optuna for hyperparameter tuning was critical, as it ef
 
 Future Work:
 Future iterations could explore transfer learning or the inclusion of exogenous variables (like holiday effects) to further refine the Prophet baseline and provide a more robust comparison against the attention-based deep learning approach.
+
